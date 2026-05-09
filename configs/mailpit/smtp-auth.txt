@@ -1,0 +1,8 @@
+# SMTP Authentication
+# Format: username:password
+#
+# These credentials are for local development only.
+
+developer:developer123
+qa:qa123
+admin:admin123

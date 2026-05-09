@@ -1,0 +1,26 @@
+name: smtp-lab-maildev
+
+services:
+  maildev:
+    image: maildev/maildev:latest
+    container_name: smtp-lab-maildev
+    restart: unless-stopped
+    ports:
+      - "${MAILDEV_WEB_PORT:-1080}:1080"
+      - "${MAILDEV_SMTP_PORT:-1027}:1025"
+    environment:
+      MAILDEV_SMTP_PORT: "1025"
+      MAILDEV_WEB_PORT: "1080"
+      MAILDEV_MAIL_DIRECTORY: /home/maildev/data
+      MAILDEV_DISABLE_WEB: "false"
+    volumes:
+      - maildev-data:/home/maildev/data
+    networks:
+      - smtp-lab-maildev
+
+networks:
+  smtp-lab-maildev:
+    name: smtp-lab-maildev
+
+volumes:
+  maildev-data:

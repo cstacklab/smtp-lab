@@ -1,0 +1,38 @@
+name: smtp-lab-mailpit-advanced
+
+services:
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: smtp-lab-mailpit-advanced
+    restart: unless-stopped
+    ports:
+      - "${MAILPIT_ADVANCED_WEB_PORT:-8026}:8025"
+      - "${MAILPIT_ADVANCED_SMTP_PORT:-1026}:1025"
+    environment:
+      TZ: "${TZ:-UTC}"
+      MP_VERBOSE: "${MAILPIT_VERBOSE:-false}"
+      MP_MAX_MESSAGES: "${MAILPIT_MAX_MESSAGES:-5000}"
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_FILE: /config/smtp-auth.txt
+      MP_SMTP_AUTH_ACCEPT_ANY: "0"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+      MP_UI_AUTH_FILE: /config/ui-auth.txt
+      MP_DISABLE_VERSION_CHECK: "1"
+    volumes:
+      - mailpit-advanced-data:/data
+      - ./configs/mailpit:/config:ro
+    networks:
+      - smtp-lab-mailpit-advanced
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 15s
+      start_period: 10s
+      timeout: 30s
+      retries: 3
+
+networks:
+  smtp-lab-mailpit-advanced:
+    name: smtp-lab-mailpit-advanced
+
+volumes:
+  mailpit-advanced-data:

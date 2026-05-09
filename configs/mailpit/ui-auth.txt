@@ -1,0 +1,8 @@
+# Web UI Authentication
+# Format: username:password
+#
+# These credentials are for local development only.
+
+admin:admin123
+developer:developer123
+viewer:viewer123
